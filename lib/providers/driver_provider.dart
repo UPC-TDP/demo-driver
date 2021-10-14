@@ -80,7 +80,7 @@ class DriverProvider extends ChangeNotifier {
   }
 
   void _updatePosition(LocationData location) {
-    _firestore.collection('routes/1/drivers').doc(DRIVER_ID).update({
+    _firestore.collection('routes/1/drivers').doc(DRIVER_ID).set({
       'latitude': location.latitude,
       'longitude': location.longitude,
       'rotation': location.heading
