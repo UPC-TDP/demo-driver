@@ -5,6 +5,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:location/location.dart';
+import 'package:maps/providers/route_provider.dart';
+import 'package:provider/provider.dart';
 
 class DriverProvider extends ChangeNotifier {
   final String DRIVER_ID = '1';
@@ -46,7 +48,7 @@ class DriverProvider extends ChangeNotifier {
     });
   }
 
-  void drive(GoogleMapController googleMapController) async {
+  void drive(BuildContext context, GoogleMapController googleMapController) async {
     try {
       LocationData locationData = await this.location.getLocation();
       _updateDriverMarker(locationData);
@@ -66,7 +68,7 @@ class DriverProvider extends ChangeNotifier {
                   tilt: 0,
                   zoom: 18.00)));
           _updateDriverMarker(locationData);
-          _updatePosition(locationData);
+          _updatePosition(context, locationData);
           notifyListeners();
         }
       });
@@ -79,8 +81,12 @@ class DriverProvider extends ChangeNotifier {
     notifyListeners();
   }
 
-  void _updatePosition(LocationData location) {
-    _firestore.collection('routes/1/drivers').doc(DRIVER_ID).set({
+  void _updatePosition(BuildContext context, LocationData location) {
+    String route =
+        Provider.of<RouteProvider>(context, listen: false).selectedRoute;
+    String driverCollection = 'routes/' + route + '/drivers';
+
+    _firestore.collection(driverCollection).doc(DRIVER_ID).set({
       'latitude': location.latitude,
       'longitude': location.longitude,
       'rotation': location.heading

@@ -15,7 +15,7 @@ class MapsWidget extends StatelessWidget {
 
   void _loadDriver(BuildContext context) {
     Provider.of<DriverProvider>(context, listen: false)
-        .drive(this.googleMapController);
+        .drive(context, this.googleMapController);
   }
 
   @override
@@ -26,7 +26,8 @@ class MapsWidget extends StatelessWidget {
 
     return Scaffold(
       body: GoogleMap(
-          initialCameraPosition: Provider.of<MapProvider>(context, listen: true).position,
+          initialCameraPosition:
+              Provider.of<MapProvider>(context, listen: true).position,
           zoomControlsEnabled: false,
           onMapCreated: onMapCreatedEvent,
           markers: markers,
