@@ -32,7 +32,7 @@ class DriverProvider extends ChangeNotifier {
 
   void loadDrivers() {
     Stream<QuerySnapshot> driverStream =
-        _firestore.collection('routes/1/drivers').snapshots();
+        _firestore.collection('companies/sesosa/routes/1/drivers').snapshots();
     driverStream.listen((event) {
       _removeDriverMarker();
       event.docs.forEach((driver) {
